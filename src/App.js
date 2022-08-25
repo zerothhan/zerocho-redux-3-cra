@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logIn } from "./redux/actions/user";
 
 function App() {
+  const user = useSelector((state) => state.user.data);
+  const dispatch = useDispatch();
+
+  const onClick = useCallback(() => {
+    dispatch(
+      logIn({
+        id: "zerocho",
+        password: "1234",
+      })
+    );
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {user ? <div>{user.nickname}</div> : "로그인 해주세요."}
+      <button onClick={onClick}>로그인</button>
     </div>
   );
 }
