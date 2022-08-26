@@ -1,4 +1,6 @@
 const { createStore, compose, applyMiddleware } = require("redux");
+const { composeWithDevTools } = require("redux-devtools-extension");
+
 const reducer = require("./reducers");
 const { addPost } = require("./actions/post");
 const { logIn, logOut } = require("./actions/user");
@@ -27,13 +29,10 @@ const thunkMiddleware = (store) => (dispatch) => (action) => {
   return dispatch(action); // 동기
 };
 
-const enhancer = compose(
-  applyMiddleware(firstMiddleware, thunkMiddleware),
-  typeof window === "object" &&
-    typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== "undefined"
-    ? window.__REDUX_DEVTOOLS_EXTENSION__()
-    : (f) => f
-);
+const enhancer =
+  process.env.NODE_ENV === "production"
+    ? compose(applyMiddleware(firstMiddleware, thunkMiddleware))
+    : composeWithDevTools(applyMiddleware(firstMiddleware, thunkMiddleware));
 
 const store = createStore(reducer, initialState, enhancer);
 
