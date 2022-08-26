@@ -5,7 +5,7 @@ const { logIn, logOut } = require("./actions/user");
 
 const initialState = {
   user: {
-    isLoggingIn: true,
+    isLoggingIn: false,
     data: null,
   },
   posts: [],
